@@ -2,7 +2,7 @@ package heroes;
 
 import static constants.Constants.PYRO_START_HP;
 import static constants.Constants.PYRO_HP_PER_LEVEL;
-import static constants.Constants.FIREBLAST_ON_PYRO;;
+import static constants.Constants.FIREBLAST_ON_PYRO;
 import static constants.Constants.FIREBLAST_ON_KNIGHT;
 import static constants.Constants.FIREBLAST_ON_WIZARD;
 import static constants.Constants.FIREBLAST_ON_ROGUE;
@@ -205,17 +205,62 @@ public class Pyromancer extends Hero {
     }
 
     /**
-     * The method computes the final damage by applying round to each
-     * damage resulted from both abilities.
-     * @param hero
+     *
+     * @param pyromancer
      */
 
     @Override
-    public void attack(final Hero hero) {
-        int damageFireblast = round(fireblast(hero));
-        int damageIgnite = round(ignite(hero));
+    public void attack(final Pyromancer pyromancer) {
+        int damageFireblast = round(fireblast(pyromancer));
+        int damageIgnite = round(ignite(pyromancer));
         int total = damageFireblast + damageIgnite;
-        hero.decreaseHp(total);
-        hero.setReceivedDamage(total);
+        pyromancer.decreaseHp(total);
+        pyromancer.setReceivedDamage(total);
+
+    }
+
+    /**
+     *
+     * @param knight
+     */
+
+    @Override
+    public void attack(final Knight knight) {
+        int damageFireblast = round(fireblast(knight));
+        int damageIgnite = round(ignite(knight));
+        int total = damageFireblast + damageIgnite;
+        knight.decreaseHp(total);
+        knight.setReceivedDamage(total);
+
+    }
+
+    /**
+     *
+     * @param rogue
+     */
+
+    @Override
+    public void attack(final Rogue rogue) {
+        int damageFireblast = round(fireblast(rogue));
+        int damageIgnite = round(ignite(rogue));
+        int total = damageFireblast + damageIgnite;
+        rogue.decreaseHp(total);
+        rogue.setReceivedDamage(total);
+
+    }
+
+    /**
+     *
+     * @param wizard
+     */
+
+    @Override
+    public void attack(final Wizard wizard) {
+        int damageFireblast = round(fireblast(wizard));
+        int damageIgnite = round(ignite(wizard));
+        int total = damageFireblast + damageIgnite;
+        wizard.decreaseHp(total);
+        wizard.setReceivedDamage(total);
+
     }
 }

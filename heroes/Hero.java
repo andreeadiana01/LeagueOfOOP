@@ -21,7 +21,6 @@ public abstract class Hero {
     private int line;
     private int col;
     private int hp;
-    private boolean isWinner;
     private int roundNR;
     private int receivedDamage;
     private boolean isIncapacitated;
@@ -84,29 +83,11 @@ public abstract class Hero {
 
     /**
      *
-     * @param line
-     */
-
-    public void setLine(final int line) {
-        this.line = line;
-    }
-
-    /**
-     *
      * @return
      */
 
     public int getCol() {
         return col;
-    }
-
-    /**
-     *
-     * @param col
-     */
-
-    public void setCol(final int col) {
-        this.col = col;
     }
 
     /**
@@ -143,15 +124,6 @@ public abstract class Hero {
 
     public void setRoundNR(final int roundNR) {
         this.roundNR = roundNR;
-    }
-
-    /**
-     *
-     * @return
-     */
-
-    public boolean isIncapacitated() {
-        return isIncapacitated;
     }
 
     /**
@@ -283,11 +255,6 @@ public abstract class Hero {
     }
 
     /**
-     *
-     */
-
-
-    /**
      * This method computes the XP for the winner of the fight.
      * @param winXp
      * @return
@@ -393,5 +360,8 @@ public abstract class Hero {
      */
 
     public abstract void isAttackedBy(Hero hero);
-    public abstract void attack(Hero hero);
+    public abstract void attack(Pyromancer pyromancer);
+    public abstract void attack(Knight knight);
+    public abstract void attack(Rogue rogue);
+    public abstract void attack(Wizard wizard);
 }

@@ -20,8 +20,6 @@ import static constants.Constants.PARALYSIS_PER_LEVEL;
 import static java.lang.Math.round;
 
 public class Rogue extends Hero {
-    public Rogue() {
-    }
 
     public Rogue(final int l, final int c) {
         super(l, c);
@@ -170,9 +168,6 @@ public class Rogue extends Hero {
         float finalDamage = 0;
         float damageRound = 0;
         float baseDamage = PARALYSIS_DAMAGE + PARALYSIS_PER_LEVEL * hero.getLevel();
-
-        int roundNr = hero.getRoundNR();
-        int overtime = roundNr + PARALYSIS_OVERTIME;
         float sumDamage = baseDamage + damageRound;
         switch (hero.getType()) {
             case 'P' :
@@ -191,7 +186,6 @@ public class Rogue extends Hero {
                 throw new IllegalStateException("Value not expected");
         }
         int damageOT = round(paralysisOT(hero));
-        System.out.println(damageOT);
         hero.decreaseHp(damageOT / 2);
         return finalDamage;
 
@@ -207,7 +201,7 @@ public class Rogue extends Hero {
         float finalDamage = 0;
         float damageRound = PARALYSIS_DAMAGE + PARALYSIS_PER_LEVEL * hero.getLevel();
         float baseDamage = 0;
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < PARALYSIS_OVERTIME; i++) {
             damageRound = PARALYSIS_DAMAGE + PARALYSIS_PER_LEVEL * hero.getLevel();
             hero.setIncapacitated(true);
         }
@@ -243,19 +237,64 @@ public class Rogue extends Hero {
     }
 
     /**
-     * The method computes the final damage by applying round to each damage
-     * resulted from both abilities.
-     * @param hero
+     *
+     * @param pyromancer
      */
 
     @Override
-    public void attack(final Hero hero) {
-        int damageBackstab = round(backstab(hero));
-        int damageParalysis = round(paralysis(hero));
+    public void attack(final Pyromancer pyromancer) {
+        int damageBackstab = round(backstab(pyromancer));
+        int damageParalysis = round(paralysis(pyromancer));
         int total = damageBackstab + damageParalysis;
-
-        hero.decreaseHp(total);
-        hero.setReceivedDamage(total);
+        pyromancer.decreaseHp(total);
+        pyromancer.setReceivedDamage(total);
 
     }
+
+    /**
+     *
+     * @param knight
+     */
+
+    @Override
+    public void attack(final Knight knight) {
+        int damageBackstab = round(backstab(knight));
+        int damageParalysis = round(paralysis(knight));
+        int total = damageBackstab + damageParalysis;
+        knight.decreaseHp(total);
+        knight.setReceivedDamage(total);
+
+
+    }
+
+    /**
+     *
+     * @param rogue
+     */
+
+    @Override
+    public void attack(final Rogue rogue) {
+        int damageBackstab = round(backstab(rogue));
+        int damageParalysis = round(paralysis(rogue));
+        int total = damageBackstab + damageParalysis;
+        rogue.decreaseHp(total);
+        rogue.setReceivedDamage(total);
+
+    }
+
+    /**
+     *
+     * @param wizard
+     */
+
+    @Override
+    public void attack(final Wizard wizard) {
+        int damageBackstab = round(backstab(wizard));
+        int damageParalysis = round(paralysis(wizard));
+        int total = damageBackstab + damageParalysis;
+        wizard.decreaseHp(total);
+        wizard.setReceivedDamage(total);
+
+    }
+
 }

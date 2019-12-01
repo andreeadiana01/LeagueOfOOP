@@ -6,7 +6,7 @@ import heroes.Pyromancer;
 import heroes.Rogue;
 import heroes.Wizard;
 
-// this class creates a hero based on its given position
+// This class creates a hero based on its given position.
 
 public final class HeroFactory {
 

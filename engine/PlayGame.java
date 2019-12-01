@@ -82,7 +82,6 @@ public class PlayGame {
                                     enemy.isAttackedBy(hero);
                                     if (enemy.getHp() <= 0 || hero.getHp() <= 0) {
                                         roundNr++;
-                                            System.out.println(roundNr);
                                     }
                                 }
                                 roundNr++;
@@ -91,6 +90,7 @@ public class PlayGame {
 
                     }
                 }
+
         for (Hero hero : heroes) {
             for (Hero enemy : heroes) {
                 if (enemy.getHp() <= 0) {
@@ -138,22 +138,6 @@ public class PlayGame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     *
-     */
-
-    public void out() {
-            for (Hero hero : heroes) {
-                if (hero.getHp() <= 0) {
-                    System.out.println(hero.getType() + " dead");
-                } else {
-                    System.out.println(hero.getType() + " " + hero.getLevel() + " "
-                            + hero.getXp() + " " + hero.getHp() + " "
-                            + hero.getLine() + " " + hero.getCol());
-                }
-            }
     }
 
 

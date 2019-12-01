@@ -204,18 +204,63 @@ public class Knight extends Hero {
     }
 
     /**
-     * The method computes the final damage by applying round
-     * to each damage resulted from both abilities.
-     * @param hero
+     *
+     * @param pyromancer
      */
 
     @Override
-    public void attack(final Hero hero) {
-        int damageExecute = round(execute(hero));
-        int damageSlam = round(slam(hero));
+    public void attack(final Pyromancer pyromancer) {
+        int damageExecute = round(execute(pyromancer));
+        int damageSlam = round(slam(pyromancer));
         int total = damageExecute + damageSlam;
-        hero.decreaseHp(total);
-        hero.setReceivedDamage(total);
+        pyromancer.decreaseHp(total);
+        pyromancer.setReceivedDamage(total);
+
     }
+
+    /**
+     *
+     * @param knight
+     */
+
+    @Override
+    public void attack(final Knight knight) {
+        int damageExecute = round(execute(knight));
+        int damageSlam = round(slam(knight));
+        int total = damageExecute + damageSlam;
+        knight.decreaseHp(total);
+        knight.setReceivedDamage(total);
+
+    }
+
+    /**
+     *
+     * @param rogue
+     */
+
+    @Override
+    public void attack(final Rogue rogue) {
+        int damageExecute = round(execute(rogue));
+        int damageSlam = round(slam(rogue));
+        int total = damageExecute + damageSlam;
+        rogue.decreaseHp(total);
+        rogue.setReceivedDamage(total);
+    }
+
+    /**
+     *
+     * @param wizard
+     */
+
+    @Override
+    public void attack(final Wizard wizard) {
+        int damageExecute = round(execute(wizard));
+        int damageSlam = round(slam(wizard));
+        int total = damageExecute + damageSlam;
+        wizard.decreaseHp(total);
+        wizard.setReceivedDamage(total);
+
+    }
+
 }
 

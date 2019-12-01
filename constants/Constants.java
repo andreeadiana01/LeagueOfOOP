@@ -46,7 +46,6 @@ public final class Constants {
     public static final int EXECUTE_PER_LEVEL = 30;
     public static final float EXECUTE_MUL_LIFE = 0.2f;
     public static final float EXECUTE_MUL_LEVEL = 0.01f;
-    public static final float EXECUTE_HP_LIMIT = 0.4f;
     public static final float EXECUTE_ON_ROGUE = 0.15f;
     public static final float EXECUTE_ON_KNIGHT = 0f;
     public static final float EXECUTE_ON_PYRO = 0.10f;
@@ -76,7 +75,6 @@ public final class Constants {
 
     public static final float DEFLECT_PERCENT = 0.35f;
     public static final float DEFLECT_PERCENT_PER_LEVEL = 0.02f;
-    public static final float DEFLECT_MAX_PERCENT = 0.7f;
     public static final float DEFLECT_ON_ROGUE = 0.2f;
     public static final float DEFLECT_ON_KNIGHT = 0.4f;
     public static final float DEFLECT_ON_PYRO = 0.3f;

@@ -15,11 +15,6 @@ public final class Main {
         PlayGame playGame = new PlayGame();
         playGame.preparation(input);
         playGame.fight();
-        playGame.out();
         playGame.computeOutput(args[0], args[1]);
-
-
-
-
     }
 }

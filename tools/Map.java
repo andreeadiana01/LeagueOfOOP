@@ -3,7 +3,7 @@ package tools;
 public final class Map {
     private char[][] map;
 
-//    class Map is implemented using a Singleton Pattern
+//    Class Map is implemented using a Singleton Pattern.
 
     private Map(final int lines, final int cols) {
         map = new char[lines][cols];

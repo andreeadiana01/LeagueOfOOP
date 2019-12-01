@@ -19,8 +19,6 @@ import static java.lang.Math.round;
 
 
 public class Wizard extends Hero {
-    public Wizard() {
-    }
 
     public Wizard(final int l, final int c) {
         super(l, c);
@@ -192,19 +190,64 @@ public class Wizard extends Hero {
     }
 
     /**
-     * The method computes the final damage by applying round
-     * to each damage resulted from both abilities.
-     * @param hero
+     *
+     * @param pyromancer
      */
 
     @Override
-    public void attack(final Hero hero) {
-        int damageDrain = round(drain(hero));
-        int damageDeflect = round(deflect(hero));
+    public void attack(final Pyromancer pyromancer) {
+        int damageDrain = round(drain(pyromancer));
+        int damageDeflect = round(deflect(pyromancer));
         int total = damageDrain + damageDeflect;
-        hero.decreaseHp(total);
-        hero.setReceivedDamage(total);
+        pyromancer.decreaseHp(total);
+        pyromancer.setReceivedDamage(total);
 
     }
+
+    /**
+     *
+     * @param knight
+     */
+
+    @Override
+    public void attack(final Knight knight) {
+        int damageDrain = round(drain(knight));
+        int damageDeflect = round(deflect(knight));
+        int total = damageDrain + damageDeflect;
+        knight.decreaseHp(total);
+        knight.setReceivedDamage(total);
+
+    }
+
+    /**
+     *
+     * @param rogue
+     */
+
+    @Override
+    public void attack(final Rogue rogue) {
+        int damageDrain = round(drain(rogue));
+        int damageDeflect = round(deflect(rogue));
+        int total = damageDrain + damageDeflect;
+        rogue.decreaseHp(total);
+        rogue.setReceivedDamage(total);
+
+    }
+
+    /**
+     *
+     * @param wizard
+     */
+
+    @Override
+    public void attack(final Wizard wizard) {
+        int damageDrain = round(drain(wizard));
+        int damageDeflect = round(deflect(wizard));
+        int total = damageDrain + damageDeflect;
+        wizard.decreaseHp(total);
+        wizard.setReceivedDamage(total);
+
+    }
+
 }
 
