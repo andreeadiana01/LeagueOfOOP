@@ -5,14 +5,6 @@ etapa 1 proiect POO
 - Am creat pe langa clasele folosite in citirea inputului, cate o clasa pentru fiecare tip de erou, o clasa care implementeaza modul de joc, o clasa factory pentru eroi si o clasa singleton care construieste harta.
 
 - Clasa principala este Hero care se extinde prin mostenire cu Pyromancer, Knight, Rogue si Wizard.
-
-	Hero -- Pyromancer
-	     |
-	     -- Knight
-	     |
-	     -- Wizard
-	     |
-	     -- Rogue		
 	      	
 
 - Toate metodele necesare unui erou sunt implementate in clasa Hero, urmand ca metodele specifice atacului unui player sa fie implementate fiecare in clasa player-ului de care apartin.
@@ -33,11 +25,3 @@ etapa 1 proiect POO
 - In clasa Constants se gasesc toate constantele necesare oferite in enunt pentru desfasurarea jocului. 
 
 - Clasa PlayGame urmareste etapele jocului de la citirea inputului, la realizarea luptelor cu setarea bonusului de teren, calcularea XP-ului castigatorului si la scrierea outputului in fisierul de iesire.
-
-  _____   _   _ U _____ u    U _____ u_   _   ____    
- |_ " _| |'| |'|\| ___"|/    \| ___"|| \ |"| |  _"\   
-   | |  /| |_| |\|  _|"       |  _|"<|  \| |/| | | |  
-  /| |\ U|  _  |u| |___       | |___U| |\  |U| |_| |\ 
- u |_|U  |_| |_| |_____|      |_____||_| \_| |____/ u 
- _// \\_ //   \\ <<   >>      <<   >>||   \\,-|||_    
-(__) (__(_") ("_(__) (__)    (__) (__(_")  (_(__)_)   
