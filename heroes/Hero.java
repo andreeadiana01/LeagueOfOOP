@@ -288,7 +288,7 @@ public abstract class Hero {
 
 
     /**
-     * This method computes the XP for the winner of the fight
+     * This method computes the XP for the winner of the fight.
      * @param winXp
      * @return
      */
@@ -308,7 +308,7 @@ public abstract class Hero {
     }
 
     /**
-     * The method sets the land modifier for each player
+     * The method sets the land modifier for each player.
      */
 
     public void setTerrainBoost() {
@@ -332,7 +332,8 @@ public abstract class Hero {
 
 
     /**
-     * The method sets the base damage for each player. This is used when a wizard applies deflect.
+     * The method sets the base damage for each player.
+     * This is used when a wizard applies deflect.
      */
 
     public void setUnaltered() {
@@ -387,7 +388,7 @@ public abstract class Hero {
     }
 
     /**
-     * Methods that implement the Double Dispatch mechanism
+     * Methods that implement the Double Dispatch mechanism.
      * @param hero
      */
 

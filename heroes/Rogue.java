@@ -89,7 +89,7 @@ public class Rogue extends Hero {
     }
 
     /**
-     * The method applies back stab on each hero based on its type
+     * The method applies back stab on each hero based on its type.
      * @param hero
      * @return
      */
@@ -243,7 +243,8 @@ public class Rogue extends Hero {
     }
 
     /**
-     * The method computes the final damage by applying round to each damage resulted from both abilities
+     * The method computes the final damage by applying round to each damage
+     * resulted from both abilities.
      * @param hero
      */
 
