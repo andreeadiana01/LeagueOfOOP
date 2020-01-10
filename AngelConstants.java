@@ -83,4 +83,13 @@ public final class AngelConstants {
     public static final int XP_ANGEL_ON_ROGUE = 40;
     public static final int XP_ANGEL_ON_WIZARD = 60;
 
+//  Fractions constants
+
+    public static final float FOUR = 1 / 4f;
+    public static final float SEVEN = 1 / 7f;
+    public static final float THREE = 1 / 3f;
+    public static final float TEN = 1 / 10f;
+    public static final float FIVE = 1 / 5f;
+
+
 }
