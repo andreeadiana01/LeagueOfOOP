@@ -1,17 +1,13 @@
 package engine;
 
+import angels.Angel;
 import heroes.Hero;
+import tools.AngelFactory;
 import tools.HeroFactory;
 import fileio.FileSystem;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import static constants.Constants.BACKSTAB_BOOST;
-import static constants.Constants.FOR_WINNER_XP;
-import static constants.Constants.MUL_DIFF_LEVEL;
-import static constants.Constants.BACKSTAB_COUNT;
-
 
 
 public class PlayGame {
@@ -26,12 +22,17 @@ public class PlayGame {
     private char[][] moves;
     private ArrayList<Hero> heroes;
     private int roundNr;
-
+    private int[] angelsNr;
+    private ArrayList<String> angelType;
+    private ArrayList<Character> angelLine;
+    private ArrayList<Character> angelCol;
+    private ArrayList<Angel> angels;
 
     public PlayGame() {
         rounds = 0;
         heroes = new ArrayList<>();
         roundNr = 0;
+        angels = new ArrayList<>();
     }
 
     /**
@@ -50,100 +51,126 @@ public class PlayGame {
         column = input.getColumn();
         rounds = input.getRounds();
         moves = input.getMoves();
+        angelsNr = input.getAngels();
+        angelType = input.getAngelType();
+        angelLine = input.getAngelLine();
+        angelCol = input.getAngelColumn();
         HeroFactory heroFactory = HeroFactory.getInstance();
+        AngelFactory angelFactory = AngelFactory.getInstance();
         for (int i = 0; i < players; i++) {
             heroes.add(heroFactory.getHero(type[i], line[i], column[i]));
         }
         for (int i = 0; i < heroes.size(); i++) {
             heroes.get(i).setId(i);
         }
+
+        for (int i = 0; i < angelType.size(); i++) {
+            if (angelType.get(i) != null) {
+                angels.add(angelFactory.getAngel(angelType.get(i),
+                        angelLine.get(i), angelCol.get(i)));
+            }
+        }
+        for (int i = 0; i < angelsNr[0]; i++) {
+            angels.get(i).setRoundNr(1);
+        }
+        for (int i = angelsNr[0]; i < angelType.size(); i++) {
+            angels.get(i).setRoundNr(2);
+        }
+        input.print();
     }
 
     /**
-     *  The fight starts. The land modifiers are set and then the winner gets its xp points.
+     *  The fight starts. The land modifiers are set and then the winner gets its xp points.The angels
+     *  then get spawned and impact the hero.
      */
 
-        public void fight() {
-                while (roundNr <= rounds) {
-                    for (Hero hero : heroes) {
-                        hero.setRoundNR(roundNr);
-                        for (Hero enemy : heroes) {
-                            if (!hero.equals(enemy)) {
-                                if (hero.getLine() == enemy.getLine()
-                                        && hero.getCol() == enemy.getCol()) {
-                                    if (hero.getLandModif() == map[hero.getLine()][hero.getCol()]) {
-                                        hero.setTerrainBoost();
-                                    }
-                                    if (hero.getRoundNR() % BACKSTAB_COUNT == 0
-                                            && hero.getLandModif() == map[hero.getLine()]
-                                            [hero.getCol()]) {
-                                        hero.setCritical(BACKSTAB_BOOST);
-                                    }
-                                    enemy.isAttackedBy(hero);
-                                    if (enemy.getHp() <= 0 || hero.getHp() <= 0) {
-                                        roundNr++;
-                                    }
-                                }
-                                roundNr++;
-                            }
-                        }
-
-                    }
-                }
-
-        for (Hero hero : heroes) {
-            for (Hero enemy : heroes) {
-                if (enemy.getHp() <= 0) {
-                    int levelDif = hero.getLevel() - enemy.getLevel();
-                    int maxim = Math.max(0, FOR_WINNER_XP - levelDif * MUL_DIFF_LEVEL);
-                    hero.setXp(hero.getXp() + maxim);
-                    hero.computeLevelUpXp(hero.getXp());
-                }
-            }
-        }
-
-        }
-
-    /**
-     * The method writes the final scores in an output file.
-     * @param inputPath
-     * @param outputPath
-     */
-
-    public void computeOutput(final String inputPath, final String outputPath) {
+    public void angelFightOut(final String inputPath, final String outputPath) {
         try {
             FileSystem fileSystem = new FileSystem(inputPath, outputPath);
+            int sw = 0;
+            while (roundNr < rounds) {
+                fileSystem.writeWord("~~ Round " + (roundNr + 1) + " ~~");
+                fileSystem.writeNewLine();
+                for (Hero hero : heroes) {
+                    hero.setRoundNR(roundNr);
+                    for (Hero enemy : heroes) {
+                        if (!hero.equals(enemy) || !enemy.equals(hero)
+                                && hero.getHp() >= 0 && enemy.getHp() >= 0) {
+                            if (hero.getLine() == enemy.getLine()
+                                    && hero.getCol() == enemy.getCol()) {
+                                if (hero.getLandModif()
+                                        == map[hero.getLine()][hero.getCol()]) {
+                                    hero.setTerrainBoost();
+                                }
+                                enemy.isAttackedBy(hero);
+                                if ((enemy.getHp() <= 0 || hero.getHp() <= 0)
+                                        && (hero.getRoundNR() != roundNr
+                                        || enemy.getRoundNR() != roundNr)) {
+                                    sw = 1;
+                                    fileSystem.writeWord("Player "
+                                            + enemy.getFullType() + " "
+                                            + (int) enemy.getId() + " was killed by "
+                                            + hero.getFullType() + " " + (int) hero.getId());
+                                    fileSystem.writeNewLine();
+                                    fileSystem.writeWord("Player "
+                                            + hero.getFullType() + " "
+                                            + (int) hero.getId() + " was killed by "
+                                            + enemy.getFullType() + " " + (int) enemy.getId());
+                                    fileSystem.writeNewLine();
+                                }
+                            }
+                        }
+                    }
+
+                }
+                for (int i = 0; i < angelType.size(); i++) {
+                    if (angels.get(i).getRoundNr() == roundNr + 1) {
+                        fileSystem.writeWord("Angel "
+                                + angelType.get(i) + " was spawned at "
+                                + angelLine.get(i) + " " + angelCol.get(i));
+                        fileSystem.writeNewLine();
+                        for (Hero hero : heroes) {
+                            if (angels.get(i).getLine()
+                                    == (char) (hero.getLine() + '0')
+                                    && angels.get(i).getCol()
+                                    == (char) (hero.getCol() + '0') && sw == 0) {
+                                hero.accept(angels.get(i));
+                                 if (angels.get(i).isGood()) {
+                                     fileSystem.writeWord(angelType.get(i)
+                                             + " helped " + hero.getFullType()
+                                             + " " + (int) hero.getId());
+                                } else {
+                                     fileSystem.writeWord(angelType.get(i)
+                                             + " hit " + hero.getFullType() + " "
+                                             + (int) hero.getId());
+                                 }
+                                fileSystem.writeNewLine();
+                            }
+                        }
+                    }
+                }
+                roundNr++;
+                fileSystem.writeNewLine();
+            }
+//            System.out.println();
+            fileSystem.writeWord("~~ Results ~~");
+            fileSystem.writeNewLine();
             for (Hero hero : heroes) {
                 if (hero.getHp() <= 0) {
-                    fileSystem.writeCharacter(hero.getType());
-                    fileSystem.writeWord(" dead");
+                    fileSystem.writeWord(hero.getType() + " dead");
                     fileSystem.writeNewLine();
                 } else {
-                    fileSystem.writeCharacter(hero.getType());
-                    fileSystem.writeWord(" ");
-                    fileSystem.writeInt(hero.getLevel());
-                    fileSystem.writeWord(" ");
-                    fileSystem.writeInt(hero.getXp());
-                    fileSystem.writeWord(" ");
-                    fileSystem.writeInt(hero.getHp());
-                    fileSystem.writeWord(" ");
-                    fileSystem.writeInt(hero.getLine());
-                    fileSystem.writeWord(" ");
-                    fileSystem.writeInt(hero.getCol());
+                    fileSystem.writeWord(hero.getType() + " "
+                            + hero.getLevel() + " " + hero.getXp() + " "
+                            + hero.getHp() + " " + hero.getLine() + " " + hero.getCol());
                     fileSystem.writeNewLine();
                 }
             }
-            fileSystem.writeNewLine();
             fileSystem.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
-
-
-
-
-
-
 }
 
