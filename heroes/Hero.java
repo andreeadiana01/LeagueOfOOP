@@ -1,5 +1,7 @@
 package heroes;
 
+import patterns.Visitable;
+
 import java.util.Objects;
 
 import static constants.Constants.ADD_XP;
@@ -15,7 +17,7 @@ import static constants.Constants.SLAM_DAMAGE;
 import static constants.Constants.BACKSTAB_DAMAGE;
 import static constants.Constants.PARALYSIS_DAMAGE;
 
-public abstract class Hero {
+public abstract class Hero implements Visitable {
     private int xp;
     private int level;
     private int line;
@@ -25,11 +27,13 @@ public abstract class Hero {
     private int receivedDamage;
     private boolean isIncapacitated;
     private char type;
+    private String fullType;
     private char landModif;
     private float boost;
     private float critical;
     private float id;
     private float unalteredDamage;
+    private float angelDamage;
 
 
     public Hero() {
@@ -158,6 +162,52 @@ public abstract class Hero {
      * @return
      */
 
+    public String getFullType() {
+        return fullType;
+    }
+
+    /**
+     *
+     * @param fullType
+     */
+
+    public void setFullType(final String fullType) {
+        this.fullType = fullType;
+    }
+
+    /**
+     *
+     * @return
+     */
+
+    public float getAngelDamage() {
+        return angelDamage;
+    }
+
+    /**
+     *
+     * @param angelDamage
+     */
+
+    public void setAngelDamage(final float angelDamage) {
+        this.angelDamage = angelDamage;
+    }
+
+    /**
+     *
+     * @param level
+     */
+
+    public void setLevel(final int level) {
+        this.level = level;
+    }
+
+    /**
+     *
+     * @return
+     */
+
+
     public char getLandModif() {
         return landModif;
     }
@@ -209,12 +259,27 @@ public abstract class Hero {
 
     /**
      *
+     * @return
+     */
+
+    public float getId() {
+        return id;
+    }
+
+    /**
+     *
      * @param boost
      */
+
 
     public void setBoost(final float boost) {
         this.boost = boost;
     }
+
+    /**
+     *
+     * @return
+     */
 
     public abstract int getMaxHp();
 
@@ -353,6 +418,25 @@ public abstract class Hero {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    /**
+     *
+     * @param hpModif
+     */
+
+    public void modifyHp(final int hpModif) {
+        this.setHp(this.getHp() + hpModif);
+    }
+
+    /**
+     *
+     * @param xpModif
+     */
+
+    public void modifyXp(final int xpModif) {
+        this.setXp(this.getXp() + xpModif);
+    }
+
 
     /**
      * Methods that implement the Double Dispatch mechanism.

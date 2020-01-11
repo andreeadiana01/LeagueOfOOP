@@ -1,5 +1,9 @@
 package heroes;
 
+import patterns.Strategy;
+import patterns.Visitor;
+import static constants.AngelConstants.FIVE;
+import static constants.AngelConstants.SEVEN;
 import static constants.Constants.ROGUE_START_HP;
 import static constants.Constants.ROGUE_HP_PER_LEVEL;
 import static constants.Constants.BACKSTAB_ON_PYRO;
@@ -19,13 +23,14 @@ import static constants.Constants.PARALYSIS_PER_LEVEL;
 
 import static java.lang.Math.round;
 
-public class Rogue extends Hero {
+public class Rogue extends Hero implements Strategy {
 
     public Rogue(final int l, final int c) {
         super(l, c);
         super.setHp(ROGUE_START_HP + ROGUE_HP_PER_LEVEL * super.getLevel());
         super.setType('R');
         super.setLandModif('W');
+        super.setFullType("Rogue");
     }
 
     /**
@@ -46,7 +51,8 @@ public class Rogue extends Hero {
 
     public float backstabPyro(final float damage) {
         float damageOnPyro = damage * (this.getCritical() + 1)
-                * (this.getBoost() + 1) * (BACKSTAB_ON_PYRO + 1);
+                * (this.getBoost() + 1) * (BACKSTAB_ON_PYRO
+                * (this.getAngelDamage() + 1) + 1);
         return damageOnPyro;
     }
 
@@ -58,7 +64,8 @@ public class Rogue extends Hero {
 
     public float backstabKnight(final float damage) {
         float damageOnKnight = damage * (this.getCritical() + 1)
-                * (this.getBoost() + 1) * (BACKSTAB_ON_KNIGHT + 1);
+                * (this.getBoost() + 1) * (BACKSTAB_ON_KNIGHT
+                * (this.getAngelDamage() + 1)  + 1);
         return damageOnKnight;
     }
 
@@ -70,7 +77,8 @@ public class Rogue extends Hero {
 
     public float backstabRogue(final float damage) {
         float damageOnRogue = damage * (this.getCritical() + 1)
-                * (this.getBoost() + 1) * (BACKSTAB_ON_ROGUE + 1);
+                * (this.getBoost() + 1) * (BACKSTAB_ON_ROGUE
+                * (this.getAngelDamage() + 1)  + 1);
         return damageOnRogue;
     }
 
@@ -121,7 +129,8 @@ public class Rogue extends Hero {
      */
 
     public float paralysisPyro(final float damage) {
-        float damageOnPyro = damage * (this.getBoost() + 1) * (PARALYSIS_ON_PYRO + 1);
+        float damageOnPyro = damage * (this.getBoost() + 1)
+                * (PARALYSIS_ON_PYRO * (this.getAngelDamage() + 1) + 1);
         return damageOnPyro;
     }
 
@@ -132,7 +141,8 @@ public class Rogue extends Hero {
      */
 
     public float paralysisKnight(final float damage) {
-        float damageOnKnight = damage * (this.getBoost() + 1) * (PARALYSIS_ON_KNIGHT + 1);
+        float damageOnKnight = damage * (this.getBoost() + 1)
+                * (PARALYSIS_ON_KNIGHT * (this.getAngelDamage() + 1) + 1);
         return damageOnKnight;
     }
 
@@ -143,7 +153,8 @@ public class Rogue extends Hero {
      */
 
     public float paralysisRogue(final float damage) {
-        float damageOnRogue = damage * (this.getBoost() + 1) * (PARALYSIS_ON_ROGUE + 1);
+        float damageOnRogue = damage * (this.getBoost() + 1)
+                * (PARALYSIS_ON_ROGUE * (this.getAngelDamage() + 1) + 1);
         return damageOnRogue;
     }
 
@@ -154,7 +165,8 @@ public class Rogue extends Hero {
      */
 
     public float paralysisWizard(final float damage) {
-        float damageOnWizard = damage * (this.getBoost() + 1) * (PARALYSIS_ON_WIZARD + 1);
+        float damageOnWizard = damage * (this.getBoost() + 1)
+                * (PARALYSIS_ON_WIZARD * (this.getAngelDamage() + 1) + 1);
         return damageOnWizard;
     }
 
@@ -297,4 +309,27 @@ public class Rogue extends Hero {
 
     }
 
+    /**
+     *
+     * @param visitor
+     */
+
+    @Override
+    public void accept(final Visitor visitor) {
+        visitor.visit(this);
+    }
+
+    /**
+     *
+     */
+
+    @Override
+    public void applyStrategy() {
+        if (this.getMaxHp() * SEVEN < this.getHp() && this.getHp() < this.getMaxHp() * FIVE) {
+            this.modifyHp((int) (-this.getHp() * SEVEN));
+        }
+        if (this.getHp() < this.getMaxHp() * SEVEN) {
+            this.modifyHp(this.getHp() / 2);
+        }
+    }
 }

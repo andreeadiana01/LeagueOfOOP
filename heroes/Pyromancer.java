@@ -1,5 +1,11 @@
 package heroes;
 
+import patterns.Strategy;
+import patterns.Visitor;
+
+import static constants.AngelConstants.FOUR;
+import static constants.AngelConstants.THREE;
+
 import static constants.Constants.PYRO_START_HP;
 import static constants.Constants.PYRO_HP_PER_LEVEL;
 import static constants.Constants.FIREBLAST_ON_PYRO;
@@ -23,13 +29,14 @@ import static constants.Constants.IGNITE_ROUND_DAMAGE_PER_LEVEL;
 import static java.lang.Math.round;
 
 
-public class Pyromancer extends Hero {
+public class Pyromancer extends Hero implements Strategy {
 
     public Pyromancer(final int l, final int c) {
         super(l, c);
         super.setHp(PYRO_START_HP + PYRO_HP_PER_LEVEL * super.getLevel());
         super.setType('P');
         super.setLandModif('V');
+        super.setFullType("Pyromancer");
     }
 
     /**
@@ -49,7 +56,8 @@ public class Pyromancer extends Hero {
      */
 
     public float fireblastPyro(final float damage) {
-        float damageOnPyro = damage * (this.getBoost() + 1) * (FIREBLAST_ON_PYRO + 1);
+        float damageOnPyro = damage * (this.getBoost() + 1)
+                * (FIREBLAST_ON_PYRO * (this.getAngelDamage() + 1) + 1);
         return damageOnPyro;
     }
 
@@ -60,7 +68,8 @@ public class Pyromancer extends Hero {
      */
 
     public float fireblastKnight(final float damage) {
-        float damageOnKnight = damage * (this.getBoost() + 1) * (FIREBLAST_ON_KNIGHT + 1);
+        float damageOnKnight = damage * (this.getBoost() + 1)
+                * (FIREBLAST_ON_KNIGHT * (this.getAngelDamage() + 1) + 1);
         return damageOnKnight;
     }
 
@@ -71,7 +80,8 @@ public class Pyromancer extends Hero {
      */
 
     public float fireblastRogue(final float damage) {
-        float damageOnRogue = damage * (this.getBoost() + 1) * (FIREBLAST_ON_ROGUE + 1);
+        float damageOnRogue = damage * (this.getBoost() + 1)
+                * (FIREBLAST_ON_ROGUE * (this.getAngelDamage() + 1) + 1);
         return damageOnRogue;
     }
 
@@ -82,7 +92,8 @@ public class Pyromancer extends Hero {
      */
 
     public float fireblastWizard(final float damage) {
-        float damageOnWizard = damage * (this.getBoost() + 1) * (FIREBLAST_ON_WIZARD + 1);
+        float damageOnWizard = damage * (this.getBoost() + 1)
+                * (FIREBLAST_ON_WIZARD * (this.getAngelDamage() + 1) + 1);
         return damageOnWizard;
     }
 
@@ -122,7 +133,8 @@ public class Pyromancer extends Hero {
      */
 
     public float ignitePyro(final float damage) {
-        float damageOnPyro = damage * (this.getBoost() + 1) * (IGNITE_ON_PYRO + 1);
+        float damageOnPyro = damage * (this.getBoost() + 1)
+                * (IGNITE_ON_PYRO * (this.getAngelDamage() + 1) + 1);
         return damageOnPyro;
     }
 
@@ -133,7 +145,8 @@ public class Pyromancer extends Hero {
      */
 
     public float igniteKnight(final float damage) {
-        float damageOnKnight = damage * (this.getBoost() + 1) * (IGNITE_ON_KNIGHT + 1);
+        float damageOnKnight = damage * (this.getBoost() + 1)
+                * (IGNITE_ON_KNIGHT * (this.getAngelDamage() + 1) + 1);
         return damageOnKnight;
     }
 
@@ -144,7 +157,8 @@ public class Pyromancer extends Hero {
      */
 
     public float igniteRogue(final float damage) {
-        float damageOnRogue = damage * (this.getBoost() + 1) * (IGNITE_ON_ROGUE + 1);
+        float damageOnRogue = damage * (this.getBoost() + 1)
+                * (IGNITE_ON_ROGUE * (this.getAngelDamage() + 1) + 1);
         return damageOnRogue;
     }
 
@@ -155,7 +169,8 @@ public class Pyromancer extends Hero {
      */
 
     public float igniteWizard(final float damage) {
-        float damageOnWizard = damage * (this.getBoost() + 1) * (IGNITE_ON_WIZARD + 1);
+        float damageOnWizard = damage * (this.getBoost() + 1)
+                * (IGNITE_ON_WIZARD * (this.getAngelDamage() + 1) + 1);
         return damageOnWizard;
     }
 
@@ -262,5 +277,29 @@ public class Pyromancer extends Hero {
         wizard.decreaseHp(total);
         wizard.setReceivedDamage(total);
 
+    }
+
+    /**
+     *
+     * @param visitor
+     */
+
+    @Override
+    public void accept(final Visitor visitor) {
+        visitor.visit(this);
+    }
+
+    /**
+     *
+     */
+
+    @Override
+    public void applyStrategy() {
+        if (this.getMaxHp() * FOUR < this.getHp() && this.getHp() < this.getMaxHp() * THREE) {
+            this.modifyHp((int) (-this.getHp() * FOUR));
+        }
+        if (this.getHp() < this.getMaxHp() * FOUR) {
+            this.modifyHp((int) (this.getHp() * THREE));
+        }
     }
 }

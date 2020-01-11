@@ -1,5 +1,10 @@
 package heroes;
 
+import patterns.Strategy;
+import patterns.Visitor;
+import static constants.AngelConstants.FOUR;
+import static constants.AngelConstants.FIVE;
+import static constants.AngelConstants.TEN;
 import static constants.Constants.WIZARD_START_HP;
 import static constants.Constants.WIZARD_HP_PER_LEVEL;
 import static constants.Constants.DRAIN_PERCENT;
@@ -18,13 +23,14 @@ import static java.lang.Math.min;
 import static java.lang.Math.round;
 
 
-public class Wizard extends Hero {
+public class Wizard extends Hero implements Strategy {
 
     public Wizard(final int l, final int c) {
         super(l, c);
         super.setHp(WIZARD_START_HP + WIZARD_HP_PER_LEVEL * super.getLevel());
         super.setType('W');
         super.setLandModif('D');
+        super.setFullType("Wizard");
     }
 
     /**
@@ -44,7 +50,8 @@ public class Wizard extends Hero {
      */
 
     public float drainPyro(final float damage) {
-        float damageOnPyro = damage * (this.getBoost() + 1) * (DRAIN_ON_PYRO + 1);
+        float damageOnPyro = damage * (this.getBoost() + 1)
+                * (DRAIN_ON_PYRO * (this.getAngelDamage() + 1) + 1);
         return damageOnPyro;
     }
 
@@ -55,7 +62,8 @@ public class Wizard extends Hero {
      */
 
     public float drainKnight(final float damage) {
-        float damageOnKnight =  damage * (this.getBoost() + 1) * (DRAIN_ON_KNIGHT + 1);
+        float damageOnKnight =  damage * (this.getBoost() + 1)
+                * (DRAIN_ON_KNIGHT * (this.getAngelDamage() + 1) + 1);
         return damageOnKnight;
     }
 
@@ -66,7 +74,8 @@ public class Wizard extends Hero {
      */
 
     public float drainRogue(final float damage) {
-        float damageOnRogue =  damage * (this.getBoost() + 1) * (DRAIN_ON_ROGUE + 1);
+        float damageOnRogue =  damage * (this.getBoost() + 1)
+                * (DRAIN_ON_ROGUE * (this.getAngelDamage() + 1) + 1);
         return damageOnRogue;
     }
 
@@ -77,7 +86,8 @@ public class Wizard extends Hero {
      */
 
     public float drainWizard(final float damage) {
-        float damageOnWizard =  damage * (this.getBoost() + 1) * (DRAIN_ON_WIZARD + 1);
+        float damageOnWizard =  damage * (this.getBoost() + 1)
+                * (DRAIN_ON_WIZARD * (this.getAngelDamage() + 1) + 1);
         return damageOnWizard;
     }
 
@@ -120,7 +130,8 @@ public class Wizard extends Hero {
      */
 
     public float deflectPyro(final float damage) {
-        float damageOnPyro =  damage * (this.getBoost() + 1) * (DEFLECT_ON_PYRO + 1);
+        float damageOnPyro =  damage * (this.getBoost() + 1)
+                * (DEFLECT_ON_PYRO * (this.getAngelDamage() + 1) + 1);
         return damageOnPyro;
     }
 
@@ -131,7 +142,8 @@ public class Wizard extends Hero {
      */
 
     public float deflectKnight(final float damage) {
-        float damageOnKnight = damage * (this.getBoost() + 1) * (DEFLECT_ON_KNIGHT + 1);
+        float damageOnKnight = damage * (this.getBoost() + 1)
+                * (DEFLECT_ON_KNIGHT * (this.getAngelDamage() + 1) + 1);
         return damageOnKnight;
     }
 
@@ -142,7 +154,8 @@ public class Wizard extends Hero {
      */
 
     public float deflectRogue(final float damage) {
-        float damageOnRogue = damage * (this.getBoost() + 1) * (DEFLECT_ON_ROGUE + 1);
+        float damageOnRogue = damage * (this.getBoost() + 1)
+                * (DEFLECT_ON_ROGUE * (this.getAngelDamage() + 1) + 1);
         return damageOnRogue;
     }
 
@@ -249,5 +262,28 @@ public class Wizard extends Hero {
 
     }
 
+    /**
+     *
+     * @param visitor
+     */
+
+    @Override
+    public void accept(final Visitor visitor) {
+        visitor.visit(this);
+    }
+
+    /**
+     *
+     */
+
+    @Override
+    public void applyStrategy() {
+        if (this.getMaxHp() * FOUR < this.getHp() && this.getHp() < this.getMaxHp() / 2) {
+            this.modifyHp((int) (-this.getHp() * TEN));
+        }
+        if (this.getHp() < this.getMaxHp() * FOUR) {
+            this.modifyHp((int) (this.getHp() * FIVE));
+        }
+    }
 }
 

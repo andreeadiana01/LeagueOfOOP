@@ -1,5 +1,10 @@
 package heroes;
 
+import patterns.Strategy;
+import patterns.Visitor;
+import static constants.AngelConstants.FOUR;
+import static constants.AngelConstants.THREE;
+import static constants.AngelConstants.FIVE;
 import static constants.Constants.KNIGHT_START_HP;
 import static constants.Constants.KNIGHT_HP_PER_LEVEL;
 import static constants.Constants.EXECUTE_ON_PYRO;
@@ -18,13 +23,14 @@ import static constants.Constants.SLAM_DAMAGE;
 import static constants.Constants.SLAM_PER_LEVEL;
 import static java.lang.Math.round;
 
-public class Knight extends Hero {
+public class Knight extends Hero implements Strategy {
 
     public Knight(final int l, final int c) {
         super(l, c);
         super.setHp(KNIGHT_START_HP + KNIGHT_HP_PER_LEVEL * super.getLevel());
         super.setType('K');
         super.setLandModif('L');
+        super.setFullType("Knight");
     }
 
     /**
@@ -44,7 +50,8 @@ public class Knight extends Hero {
      */
 
     public float executePyro(final float damage) {
-        float damageOnPyro = damage * (this.getBoost() + 1) * (EXECUTE_ON_PYRO + 1);
+        float damageOnPyro = damage * (this.getBoost() + 1)
+                * (EXECUTE_ON_PYRO * (this.getAngelDamage() + 1) + 1);
         return damageOnPyro;
     }
 
@@ -55,7 +62,8 @@ public class Knight extends Hero {
      */
 
     public float executeKnight(final float damage) {
-        float damageOnKnight = damage * (this.getBoost() + 1) * (EXECUTE_ON_KNIGHT + 1);
+        float damageOnKnight = damage * (this.getBoost() + 1)
+                * (EXECUTE_ON_KNIGHT * (this.getAngelDamage() + 1)  + 1);
         return damageOnKnight;
     }
 
@@ -66,7 +74,8 @@ public class Knight extends Hero {
      */
 
     public float executeRogue(final float damage) {
-        float damageOnRogue = damage * (this.getBoost() + 1) * (EXECUTE_ON_ROGUE + 1);
+        float damageOnRogue = damage * (this.getBoost() + 1)
+                * (EXECUTE_ON_ROGUE * (this.getAngelDamage() + 1)  + 1);
         return damageOnRogue;
     }
 
@@ -77,7 +86,8 @@ public class Knight extends Hero {
      */
 
     public float executeWizard(final float damage) {
-        float damageOnWizard = damage * (this.getBoost() + 1) * (EXECUTE_ON_WIZARD + 1);
+        float damageOnWizard = damage * (this.getBoost() + 1)
+                * (EXECUTE_ON_WIZARD * (this.getAngelDamage() + 1) + 1);
         return damageOnWizard;
     }
 
@@ -123,7 +133,8 @@ public class Knight extends Hero {
      */
 
     public float slamPyro(final float damage) {
-        float damageOnPyro = damage * (this.getBoost() + 1) * (SLAM_ON_PYRO + 1);
+        float damageOnPyro = damage * (this.getBoost() + 1)
+                * (SLAM_ON_PYRO * (this.getAngelDamage() + 1)  + 1);
         return damageOnPyro;
     }
 
@@ -134,7 +145,8 @@ public class Knight extends Hero {
      */
 
     public float slamKnight(final float damage) {
-        float damageOnKnight = damage * (this.getBoost() + 1) * (SLAM_ON_KNIGHT + 1);
+        float damageOnKnight = damage * (this.getBoost() + 1)
+                * (SLAM_ON_KNIGHT * (this.getAngelDamage() + 1)  + 1);
         return damageOnKnight;
     }
 
@@ -145,7 +157,8 @@ public class Knight extends Hero {
      */
 
     public float slamRogue(final float damage) {
-        float damageOnRogue = damage * (this.getBoost() + 1) * (SLAM_ON_ROGUE + 1);
+        float damageOnRogue = damage * (this.getBoost() + 1)
+                * (SLAM_ON_ROGUE * (this.getAngelDamage() + 1)  + 1);
         return damageOnRogue;
     }
 
@@ -156,7 +169,8 @@ public class Knight extends Hero {
      */
 
     public float slamWizard(final float damage) {
-        float damageOnWizard = damage * (this.getBoost() + 1) * (SLAM_ON_WIZARD + 1);
+        float damageOnWizard = damage * (this.getBoost() + 1)
+                * (SLAM_ON_WIZARD * (this.getAngelDamage() + 1)  + 1);
         return damageOnWizard;
     }
 
@@ -262,5 +276,29 @@ public class Knight extends Hero {
 
     }
 
+    /**
+     *
+     * @param visitor
+     */
+
+    @Override
+    public void accept(final Visitor visitor) {
+        visitor.visit(this);
+    }
+
+    /**
+     *
+     */
+
+    @Override
+    public void applyStrategy() {
+        if (this.getMaxHp() * THREE < this.getHp() && this.getHp() < this.getMaxHp() / 2) {
+            this.modifyHp((int) (this.getHp() * FIVE));
+
+        }
+        if (this.getHp() < getMaxHp() * THREE) {
+            this.modifyHp((int) (this.getHp() * FOUR));
+        }
+    }
 }
 
