@@ -14,7 +14,6 @@ public final class Main {
         Input input = inputLoader.load();
         PlayGame playGame = new PlayGame();
         playGame.preparation(input);
-        playGame.fight();
-        playGame.computeOutput(args[0], args[1]);
+        playGame.angelFightOut(args[0], args[1]);
     }
 }
